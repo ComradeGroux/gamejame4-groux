@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,7 +14,10 @@ public class Player : MonoBehaviour
 	private InputAction tauntAction;
 
 	private Rigidbody rb;
-
+	
+	public float _dashSpeed = 50.0f;
+	public float _dashTime = 0.05f;
+	
 	public float moveSpeed = 7;
 
 	private void Awake()
@@ -69,6 +73,7 @@ public class Player : MonoBehaviour
 		moveDir *= moveSpeed;
 
 		rb.velocity = moveDir;
+		transform.forward = rb.velocity.normalized;
 	}
 	private void OnMovementCanceled(InputAction.CallbackContext context)
 	{
@@ -77,6 +82,7 @@ public class Player : MonoBehaviour
 
 	private void OnGrabPerformed(InputAction.CallbackContext context)
 	{
+		GetComponent<GrabMechanic>().Grab();
 	}
 	private void OnGrabCanceled(InputAction.CallbackContext context)
 	{
@@ -84,15 +90,16 @@ public class Player : MonoBehaviour
 
 	private void OnDashPerformed(InputAction.CallbackContext context)
 	{
-		float counter = 0f;
-		float waitTime = 0.2f;
-
-		rb.AddForce(transform.forward * 1000);
-		while (counter < waitTime)
+		StartCoroutine(DashCoroutine());
+	}
+	private IEnumerator DashCoroutine()
+	{
+		float startTime = Time.time;
+		while (Time.time < startTime + _dashTime)
 		{
-			counter += Time.deltaTime;
+			transform.Translate(transform.forward * _dashSpeed * Time.deltaTime);
+			yield return null;
 		}
-		rb.velocity = Vector3.zero;
 	}
 	private void OnDashCanceled(InputAction.CallbackContext context)
 	{
