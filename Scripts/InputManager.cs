@@ -9,6 +9,7 @@ public class InputManager : MonoBehaviour
 	public Vector2 movementInput;
 	public float verticalInput;
 	public float horizontalInput;
+	float deadzone = 0.1f;
 
 	private void OnEnable()
 	{
@@ -16,7 +17,8 @@ public class InputManager : MonoBehaviour
 		{
 			playerControls = new PlayerControls();
 
-			playerControls.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
+			playerControls.PlayerMovement.Movement.performed += i => { movementInput = i.ReadValue<Vector2>(); Debug.Log("running"); };
+			playerControls.PlayerMovement.Movement.canceled += j => { movementInput = Vector2.zero; Debug.Log("canceled"); };
 		}
 
 		playerControls.Enable();
@@ -34,14 +36,7 @@ public class InputManager : MonoBehaviour
 
 	private void HandleMovementInput()
 	{
-		if (movementInput.y > 0.2 || movementInput.y < -0.2)
-			verticalInput = movementInput.y;
-		else
-			verticalInput = 0;
-
-		if (movementInput.x > 0.2 || movementInput.x < -0.2)
-			horizontalInput = movementInput.x;
-		else
-			horizontalInput = 0;
+		verticalInput = movementInput.y;
+		horizontalInput = movementInput.x;
 	}
 }

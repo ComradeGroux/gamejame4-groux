@@ -22,7 +22,6 @@ public class PlayerLocomotion : MonoBehaviour
 	public void HandleAllMovements()
 	{
 		HandleMovement();
-		ClearMovement();
 	}
 
 	private void HandleMovement()
@@ -33,12 +32,9 @@ public class PlayerLocomotion : MonoBehaviour
 		moveDirection.y = 0;
 		moveDirection *= movementSpeed;
 
+		Debug.Log(moveDirection);
+
 		Vector3 movementVeloctiy = moveDirection;
 		rb.velocity = movementVeloctiy;
-	}
-
-	private void ClearMovement()
-	{
-		// rb.velocity = Vector3.zero;
 	}
 }
