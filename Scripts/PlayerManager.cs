@@ -84,6 +84,15 @@ public class Player : MonoBehaviour
 
 	private void OnDashPerformed(InputAction.CallbackContext context)
 	{
+		float counter = 0f;
+		float waitTime = 0.2f;
+
+		rb.AddForce(transform.forward * 1000);
+		while (counter < waitTime)
+		{
+			counter += Time.deltaTime;
+		}
+		rb.velocity = Vector3.zero;
 	}
 	private void OnDashCanceled(InputAction.CallbackContext context)
 	{
