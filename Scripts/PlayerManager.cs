@@ -1,26 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
+using UnityEngine.InputSystem;
 
-public class PlayerManager : MonoBehaviour
+public class Player : MonoBehaviour
 {
-	InputManager inputManager;
-	PlayerLocomotion playerLocomotion;
+	private PlayerInput playerInput;
+	private InputAction moveAction;
+	private Rigidbody rb;
+
+	public float moveSpeed;
 
 	private void Awake()
 	{
-		inputManager = GetComponent<InputManager>();
-		playerLocomotion = GetComponent<PlayerLocomotion>();
+		playerInput = GetComponent<PlayerInput>();
+		rb = GetComponent<Rigidbody>();
+
+		moveAction = playerInput.actions["Movement"];
 	}
 
-	private void Update()
+	private void OnEnable()
 	{
-		inputManager.HandleAllInputs();
+		moveAction.performed += OnMovementPerformed;
+		moveAction.canceled += OnMovementPerformed;
 	}
 
-	private void FixedUpdate()
+	private void OnDisable()
 	{
-		playerLocomotion.HandleAllMovements();
+		moveAction.performed -= OnMovementPerformed;
+		moveAction.canceled -= OnMovementPerformed;
+	}
+
+	private void OnMovementPerformed(InputAction.CallbackContext context)
+	{
+		Debug.Log("MOVEMENT");
+		Vector2 move = context.ReadValue<Vector2>();
+		Vector3 moveDir = new Vector3();
+
+		moveDir.x = move.x;
+		moveDir.y = 0;
+		moveDir.z = move.y;
+
+		rb.velocity = moveDir;
+	}
+
+	private void OnMovementCanceled(InputAction.CallbackContext context)
+	{
+		Debug.Log("CANCELED");
 	}
 }
