@@ -94,10 +94,11 @@ public class Player : MonoBehaviour
 	}
 	private IEnumerator DashCoroutine()
 	{
+		Vector3 dashDir = transform.forward;
 		float startTime = Time.time;
 		while (Time.time < startTime + _dashTime)
 		{
-			transform.Translate(transform.forward * _dashSpeed * Time.deltaTime);
+			transform.Translate(dashDir * _dashSpeed * Time.deltaTime);
 			yield return null;
 		}
 	}

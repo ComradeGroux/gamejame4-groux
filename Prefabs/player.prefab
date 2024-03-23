@@ -44,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 61840225827303466}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -2593323067352201440, guid: 914afa23efa91df4595c5c296f86c457, type: 3}
 --- !u!23 &5305080318512991114
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -65,6 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
+  - {fileID: 2100000, guid: 566b6d451396d1443b9efd574385b04b, type: 2}
   - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -135,7 +136,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &-5197686467965305075
 MonoBehaviour:
@@ -180,4 +181,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 195ef1bd9a725c64e9682f31af37b969, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dashSpeed: 50
+  _dashTime: 0.05
   moveSpeed: 7
