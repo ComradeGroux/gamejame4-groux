@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 	private InputAction moveAction;
 	private Rigidbody rb;
 
-	public float moveSpeed;
+	public float moveSpeed = 7;
 
 	private void Awake()
 	{
