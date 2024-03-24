@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
 	
 	public float _dashSpeed = 50.0f;
 	public float _dashTime = 0.05f;
+	private Vector3 lastAcceptableRota;
 	
 	public float moveSpeed = 7;
 
@@ -76,13 +77,20 @@ public class Player : MonoBehaviour
 		moveDir *= moveSpeed;
 
 		rb.velocity = moveDir;
+		if( (rb.velocity.x < -0.2 || rb.velocity.x > 0.2) && 
+			rb.velocity.z < -0.2 || rb.velocity.z > 0.2)
+		{
+			lastAcceptableRota = rb.velocity.normalized;
+			print(lastAcceptableRota);
+		}
+
 		transform.forward = rb.velocity.normalized;
 	}
 	private void OnMovementCanceled(InputAction.CallbackContext context)
 	{
         GetComponent<Animator>().SetBool("isMoving", false);
-
-        transform.forward = rb.velocity.normalized;
+		print(lastAcceptableRota);
+		transform.forward = lastAcceptableRota;
 		rb.velocity = Vector3.zero;
 	}
 
