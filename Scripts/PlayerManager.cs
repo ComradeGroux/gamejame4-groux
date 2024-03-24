@@ -62,6 +62,11 @@ public class Player : MonoBehaviour
 		tauntAction.canceled -= OnTauntCanceled;
 	}
 
+	public void Update()
+	{
+		Debug.DrawRay(transform.position, transform.forward);
+	}
+
 	private void OnMovementPerformed(InputAction.CallbackContext context)
 	{
 		GetComponent<Animator>().SetBool("isMoving", true);
@@ -77,13 +82,15 @@ public class Player : MonoBehaviour
 		moveDir *= moveSpeed;
 
 		rb.velocity = moveDir;
-		transform.forward = rb.velocity.normalized;
+		if (rb.velocity != Vector3.zero)
+		{
+			Quaternion targetRotation = Quaternion.LookRotation(rb.velocity.normalized);
+			transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 10000);
+		}
 	}
 	private void OnMovementCanceled(InputAction.CallbackContext context)
 	{
         GetComponent<Animator>().SetBool("isMoving", false);
-
-        transform.forward = rb.velocity.normalized;
 		rb.velocity = Vector3.zero;
 	}
 
@@ -103,11 +110,10 @@ public class Player : MonoBehaviour
 	private IEnumerator DashCoroutine()
 	{
 		isDashing = true;
-		Vector3 dashDir = transform.forward;
 		float startTime = Time.time;
 		while (Time.time < startTime + _dashTime)
 		{
-			transform.Translate(dashDir * _dashSpeed * Time.deltaTime);
+			transform.Translate(Vector3.forward * _dashSpeed * Time.deltaTime);
 			yield return null;
 		}
 		isDashing = false;
