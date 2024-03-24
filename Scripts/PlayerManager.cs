@@ -19,8 +19,9 @@ public class Player : MonoBehaviour
 	private bool isDashing = false;
 	public float _dashSpeed = 50.0f;
 	public float _dashTime = 0.05f;
-	private Vector3 lastAcceptableRota;
-	
+
+	public float attackRange = 2;
+	public float throwBack = 200.0f;
 	public float moveSpeed = 7;
 
 	private void Awake()
@@ -127,6 +128,29 @@ public class Player : MonoBehaviour
 
 	private void OnAttackPerformed(InputAction.CallbackContext context)
 	{
+		Vector3 attackPos = transform.position + transform.forward * attackRange;
+		Collider[] hitColliders = Physics.OverlapSphere(attackPos, attackRange);
+
+		foreach (Collider collider in hitColliders)
+		{
+			if (collider.CompareTag("Goober") && collider.gameObject != gameObject)
+			{
+				if (collider.transform.parent != gameObject)
+				{
+					Debug.Log("NOT THE SAME");
+				}
+				else
+					Debug.Log("THERE ARE THE SAME");
+			}
+			else if (collider.gameObject == gameObject)
+				Debug.Log("SAME gameObject");
+		}
+	}
+	private void PlayerHit(GameObject hitPlayer)
+	{
+		Rigidbody parent = hitPlayer.GetComponentInParent<Rigidbody>();
+		Vector3 direction = (hitPlayer.transform.position - transform.forward).normalized;
+		parent.AddForce(direction * throwBack, ForceMode.Impulse);
 	}
 	private void OnAttackCanceled(InputAction.CallbackContext context)
 	{
