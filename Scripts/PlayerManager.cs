@@ -15,7 +15,8 @@ public class Player : MonoBehaviour
 	private InputAction tauntAction;
 
 	private Rigidbody rb;
-	
+
+	private bool isDashing = false;
 	public float _dashSpeed = 50.0f;
 	public float _dashTime = 0.05f;
 	
@@ -96,10 +97,12 @@ public class Player : MonoBehaviour
 
 	private void OnDashPerformed(InputAction.CallbackContext context)
 	{
-		StartCoroutine(DashCoroutine());
+		if (!isDashing)
+			StartCoroutine(DashCoroutine());
 	}
 	private IEnumerator DashCoroutine()
 	{
+		isDashing = true;
 		Vector3 dashDir = transform.forward;
 		float startTime = Time.time;
 		while (Time.time < startTime + _dashTime)
@@ -107,6 +110,7 @@ public class Player : MonoBehaviour
 			transform.Translate(dashDir * _dashSpeed * Time.deltaTime);
 			yield return null;
 		}
+		isDashing = false;
 	}
 	private void OnDashCanceled(InputAction.CallbackContext context)
 	{
