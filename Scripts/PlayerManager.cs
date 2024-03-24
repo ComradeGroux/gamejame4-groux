@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
 	private bool isDashing = false;
 	public float _dashSpeed = 50.0f;
 	public float _dashTime = 0.05f;
+	private Vector3 lastAcceptableRota;
 	
 	public float moveSpeed = 7;
 
@@ -87,10 +88,12 @@ public class Player : MonoBehaviour
 			Quaternion targetRotation = Quaternion.LookRotation(rb.velocity.normalized);
 			transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 10000);
 		}
+
+		transform.forward = rb.velocity.normalized;
 	}
 	private void OnMovementCanceled(InputAction.CallbackContext context)
 	{
-        GetComponent<Animator>().SetBool("isMoving", false);
+		GetComponent<Animator>().SetBool("isMoving", false);
 		rb.velocity = Vector3.zero;
 	}
 
