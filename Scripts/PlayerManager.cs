@@ -77,6 +77,7 @@ public class Player : MonoBehaviour
 	}
 	private void OnMovementCanceled(InputAction.CallbackContext context)
 	{
+		transform.forward = rb.velocity.normalized;
 		rb.velocity = Vector3.zero;
 	}
 
