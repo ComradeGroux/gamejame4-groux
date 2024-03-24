@@ -13,8 +13,10 @@ public class Player : MonoBehaviour
 	private InputAction dashAction;
 	private InputAction attackAction;
 	private InputAction tauntAction;
-
 	private Rigidbody rb;
+
+	public Material[] intMat;
+	public Material[] extMat;
 
 	private bool isDashing = false;
 	public float _dashSpeed = 50.0f;
@@ -34,7 +36,16 @@ public class Player : MonoBehaviour
 		dashAction = playerInput.actions["Dash"];
 		attackAction = playerInput.actions["Attack"];
 		tauntAction = playerInput.actions["Taunt"];
-}
+
+		SkinnedMeshRenderer mesh = GetComponentInChildren<SkinnedMeshRenderer>();
+		Material[] mat = new Material[2];
+
+		Debug.Log(playerInput.playerIndex);
+		mat[0] = intMat[playerInput.playerIndex];
+		mat[1] = extMat[playerInput.playerIndex];
+		Debug.Log(mat[0].ToString());
+		mesh.materials = mat;
+	}
 
 	private void OnEnable()
 	{
