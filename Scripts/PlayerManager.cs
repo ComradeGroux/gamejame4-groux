@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -62,6 +63,8 @@ public class Player : MonoBehaviour
 
 	private void OnMovementPerformed(InputAction.CallbackContext context)
 	{
+		GetComponent<Animator>().SetBool("isMoving", true);
+		
 		Vector2 move = context.ReadValue<Vector2>();
 		Vector3 moveDir = new Vector3();
 
@@ -77,7 +80,9 @@ public class Player : MonoBehaviour
 	}
 	private void OnMovementCanceled(InputAction.CallbackContext context)
 	{
-		transform.forward = rb.velocity.normalized;
+        GetComponent<Animator>().SetBool("isMoving", false);
+
+        transform.forward = rb.velocity.normalized;
 		rb.velocity = Vector3.zero;
 	}
 
