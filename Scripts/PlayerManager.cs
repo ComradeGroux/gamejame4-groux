@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,39 +14,39 @@ public class Player : MonoBehaviour
 	private InputAction tauntAction;
 	private Rigidbody rb;
 
-	public Material[] intMat;
-	public Material[] extMat;
+    public Material[] intMat;
+    public Material[] extMat;
 
-	private bool isDashing = false;
-	public float _dashSpeed = 50.0f;
-	public float _dashTime = 0.05f;
+    private bool isDashing = false;
+    public float _dashSpeed = 50.0f;
+    public float _dashTime = 0.05f;
 
-	public float attackRange = 2;
-	public float throwBack = 200.0f;
-	public float moveSpeed = 7;
+    public float attackRange = 2;
+    public float throwBack = 200.0f;
+    public float moveSpeed = 7;
 
-	private void Awake()
-	{
-		playerInput = GetComponent<PlayerInput>();
-		rb = GetComponent<Rigidbody>();
+    private void Awake()
+    {
+        playerInput = GetComponent<PlayerInput>();
+        rb = GetComponent<Rigidbody>();
 
-		moveAction = playerInput.actions["Movement"];
-		grabAction = playerInput.actions["Grab"];
-		dashAction = playerInput.actions["Dash"];
-		attackAction = playerInput.actions["Attack"];
-		tauntAction = playerInput.actions["Taunt"];
+        moveAction = playerInput.actions["Movement"];
+        grabAction = playerInput.actions["Grab"];
+        dashAction = playerInput.actions["Dash"];
+        attackAction = playerInput.actions["Attack"];
+        tauntAction = playerInput.actions["Taunt"];
 
-		SkinnedMeshRenderer mesh = GetComponentInChildren<SkinnedMeshRenderer>();
-		Material[] mat = new Material[2];
+        SkinnedMeshRenderer mesh = GetComponentInChildren<SkinnedMeshRenderer>();
+        Material[] mat = new Material[2];
 
-		Debug.Log(playerInput.playerIndex);
-		mat[0] = intMat[playerInput.playerIndex];
-		mat[1] = extMat[playerInput.playerIndex];
-		Debug.Log(mat[0].ToString());
-		mesh.materials = mat;
-	}
+        Debug.Log(playerInput.playerIndex);
+        mat[1] = intMat[playerInput.playerIndex];
+        mat[0] = extMat[playerInput.playerIndex];
+        Debug.Log(mat[0].ToString());
+        mesh.materials = mat;
+    }
 
-	private void OnEnable()
+    private void OnEnable()
 	{
 		moveAction.performed += OnMovementPerformed;
 		moveAction.canceled += OnMovementCanceled;
